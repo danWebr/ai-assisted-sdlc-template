@@ -11,4 +11,6 @@ node_modules/
 dist/
 coverage/
 *.bootstrap.*
+.DS_Store
+.pi/npm/
 .idea

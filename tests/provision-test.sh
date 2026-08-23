@@ -467,7 +467,9 @@ run_provision_tty() {
       PROVISION_STATUS_FILE="$status_file" \
       script -qec "$runner" /dev/null >"$output_file" 2>&1 || true
   else
-    printf '%s' "$input" | env \
+    command -v expect >/dev/null 2>&1 ||
+      fail "macOS provisioning tests require the expect command to drive a child pseudo-terminal."
+    env \
       PATH="$fake_bin:$PATH" \
       FAKE_GH_STATE="$github_state" \
       FAKE_RAILWAY_STATE="$railway_state" \
@@ -475,7 +477,17 @@ run_provision_tty() {
       FAKE_SKIP_LABEL_PERSISTENCE="$skip_label" \
       REPOSITORY_UNDER_TEST="$repository" \
       PROVISION_STATUS_FILE="$status_file" \
-      script -q /dev/null "$runner" >"$output_file" 2>&1 || true
+      EXPECT_RUNNER="$runner" \
+      EXPECT_INPUT="$input" \
+      expect <<'EXPECT' >"$output_file" 2>&1 || true
+set timeout 120
+log_user 1
+spawn -noecho $env(EXPECT_RUNNER)
+send -- $env(EXPECT_INPUT)
+expect eof
+catch wait result
+exit [lindex $result 3]
+EXPECT
   fi
 
   [[ -f "$status_file" ]] || fail "provisioning did not report an exit status."

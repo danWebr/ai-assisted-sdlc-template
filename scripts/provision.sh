@@ -704,6 +704,9 @@ fi
 action_is_planned() {
   local requested_action="$1"
   local planned_action
+  if ((${#action_tokens[@]} == 0)); then
+    return 1
+  fi
   for planned_action in "${action_tokens[@]}"; do
     if [[ "$planned_action" == "$requested_action" ]]; then
       return 0
@@ -763,8 +766,9 @@ refresh_railway_project_id() {
   )" || fail "Railway project '$repository_name' was not visible after creation. Retry provisioning; existing-state detection will continue safely."
 }
 
-for action_token in "${action_tokens[@]}"; do
-  case "$action_token" in
+if ((${#action_tokens[@]} > 0)); then
+  for action_token in "${action_tokens[@]}"; do
+    case "$action_token" in
     github:branch:create:dev)
       jq -n --arg sha "$main_sha" '{ref:"refs/heads/dev", sha:$sha}' \
         >"$temporary_directory/create-dev.json"
@@ -853,8 +857,9 @@ for action_token in "${action_tokens[@]}"; do
     *)
       fail "internal mutation plan error '$action_token'."
       ;;
-  esac
-done
+    esac
+  done
+fi
 
 add_verification_failure() {
   verification_failures+=("$1")
@@ -962,9 +967,11 @@ if [[ "$railway_intent" == "true" ]]; then
       add_verification_failure "Railway project '$repository_name' contains services, which may include applications, databases, domains, regions, or other deferred topology"
     fi
     collect_railway_topology_problems
-    for railway_topology_problem in "${railway_topology_problems[@]}"; do
-      add_verification_failure "Railway project '$repository_name' contains deferred topology: $railway_topology_problem"
-    done
+    if ((${#railway_topology_problems[@]} > 0)); then
+      for railway_topology_problem in "${railway_topology_problems[@]}"; do
+        add_verification_failure "Railway project '$repository_name' contains deferred topology: $railway_topology_problem"
+      done
+    fi
     verified_environments="$(
       jq -Sc '[.data.project.environments.edges[].node.name] | sort' \
         "$temporary_directory/railway-project.json"

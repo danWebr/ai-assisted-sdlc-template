@@ -26,9 +26,10 @@ This repository documents a personal workflow for incidental public reuse. Compa
 
 ### macOS golden-path setup
 
-The tested path uses a current macOS release with the system `zsh` and
-`/usr/bin/script`. Install each prerequisite from its upstream source; this
-repository intentionally does not install or pin user-level tools.
+The tested path uses a current macOS release with the system `zsh`,
+`/usr/bin/script`, and `/usr/bin/expect`. Install each prerequisite from its
+upstream source; this repository intentionally does not install or pin user-level
+tools.
 
 1. Install Apple's Command Line Tools with `xcode-select --install`, open a new
    terminal, and confirm `git --version` succeeds.
@@ -65,7 +66,7 @@ repository intentionally does not install or pin user-level tools.
    available:
 
    ```sh
-   command -v git mise jq script gh pi
+   command -v git mise jq script expect gh pi
    command -v railway  # required only when Railway was selected
    ```
 
@@ -77,7 +78,8 @@ repository intentionally does not install or pin user-level tools.
    chosen provider, and begin product discovery with
    `/skill:grill-with-docs`.
 
-The `script` pseudo-terminal utility used by provisioning acceptance is part of
-macOS; it is not the same as the repository's shell scripts. Ubuntu users must
-adapt the package-manager commands and may need the `util-linux` implementation
-of `script`. Browser authentication and executable paths can also differ.
+Provisioning acceptance uses a pseudo-terminal. On macOS, the test uses the
+system `expect` command because BSD `script` does not forward piped input to a
+child command; Ubuntu uses the `util-linux` implementation of `script`. These
+are not the same as the repository's shell scripts. Browser authentication and
+executable paths can also differ.
