@@ -357,4 +357,4 @@ transaction_committed="true"
 
 printf '\nBootstrap complete for %s.\n' "$repository_identity"
 printf 'No repository, credentials, infrastructure, commit, or push was created.\n'
-printf 'Review the uncommitted changes with `git diff` and `git status` before committing them manually.\n'
+printf 'Review the uncommitted changes with git diff and git status before committing them manually.\n'

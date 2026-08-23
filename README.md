@@ -21,7 +21,9 @@ Canonical-template maintenance notes live in [Template maintainer onboarding](do
 
 ## Engineering workflow
 
-This repository packages a portable engineering lifecycle, project-local skills, GitHub collaboration defaults, a stable verification interface, and deployment policy without choosing a product domain, application stack, or repository layout. Review `AGENTS.md`, `.pi/settings.json`, and the project-local skills before trusting the repository in Pi. Product discovery begins with `/skill:grill-with-docs`; implementation remains human-triggered with `implement`.
+This repository packages a portable engineering lifecycle, project-local skills, GitHub collaboration defaults, a stable verification interface, and deployment policy without choosing a product domain, application stack, or repository layout. Review `AGENTS.md`, `.pi/settings.json`, and the project-local skills before trusting the repository in Pi.
+
+Most work follows the short path: clarify only if needed, invoke `implement`, run `mise run verify`, open a pull request, and let a human review and merge it. Use `to-spec` and `to-tickets` for work that spans multiple sessions or contributors. See [Lifecycle and skill routes](docs/lifecycle.md) for the entry points and optional supporting workflows.
 
 ## Guides
 

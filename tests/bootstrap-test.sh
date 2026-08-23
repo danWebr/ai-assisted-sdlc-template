@@ -103,7 +103,11 @@ assert_clean() {
 
 file_mode() {
   local file="$1"
-  stat -f '%Lp' "$file" 2>/dev/null || stat -c '%a' "$file"
+  if stat -c '%a' "$file" >/dev/null 2>&1; then
+    stat -c '%a' "$file"
+  else
+    stat -f '%Lp' "$file"
+  fi
 }
 
 metadata_input=$'\nOrbit Notes\nA calm place to organize project notes.\ny\n'
