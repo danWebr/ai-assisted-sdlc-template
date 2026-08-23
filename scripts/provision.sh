@@ -406,14 +406,14 @@ done
 inspect_ruleset "dev" "$dev_ruleset_file"
 inspect_ruleset "main" "$main_ruleset_file"
 
-railway_projects_query='query ProvisionProjects($after: String) { projects(first: 100, after: $after) { edges { cursor node { id name workspaceId } } pageInfo { hasNextPage endCursor } } }'
-railway_project_identity_query='query ProvisionProjectIdentity($id: String!) { project(id: $id) { id name workspaceId } }'
-railway_project_environments_query='query ProvisionProjectEnvironments($id: String!, $after: String) { project(id: $id) { id environments(first: 100, after: $after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }'
-railway_project_services_query='query ProvisionProjectServices($id: String!, $after: String) { project(id: $id) { id services(first: 100, after: $after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }'
-railway_project_buckets_query='query ProvisionProjectBuckets($id: String!, $after: String) { project(id: $id) { id buckets(first: 100, after: $after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }'
-railway_environment_resources_query='query ProvisionEnvironmentResources($projectId: String!, $environmentId: String!, $after: String) { environment(id: $environmentId, projectId: $projectId) { id volumeInstances(first: 100, after: $after) { edges { cursor node { id } } pageInfo { hasNextPage endCursor } } } }'
-railway_environment_rename_mutation='mutation ProvisionEnvironmentRename($id: String!, $input: EnvironmentRenameInput!) { environmentRename(id: $id, input: $input) }'
-railway_environment_create_mutation='mutation ProvisionEnvironmentCreate($input: EnvironmentCreateInput!) { environmentCreate(input: $input) { id name } }'
+railway_projects_query="query ProvisionProjects(\$after: String) { projects(first: 100, after: \$after) { edges { cursor node { id name workspaceId } } pageInfo { hasNextPage endCursor } } }"
+railway_project_identity_query="query ProvisionProjectIdentity(\$id: String!) { project(id: \$id) { id name workspaceId } }"
+railway_project_environments_query="query ProvisionProjectEnvironments(\$id: String!, \$after: String) { project(id: \$id) { id environments(first: 100, after: \$after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }"
+railway_project_services_query="query ProvisionProjectServices(\$id: String!, \$after: String) { project(id: \$id) { id services(first: 100, after: \$after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }"
+railway_project_buckets_query="query ProvisionProjectBuckets(\$id: String!, \$after: String) { project(id: \$id) { id buckets(first: 100, after: \$after) { edges { cursor node { id name } } pageInfo { hasNextPage endCursor } } } }"
+railway_environment_resources_query="query ProvisionEnvironmentResources(\$projectId: String!, \$environmentId: String!, \$after: String) { environment(id: \$environmentId, projectId: \$projectId) { id volumeInstances(first: 100, after: \$after) { edges { cursor node { id } } pageInfo { hasNextPage endCursor } } } }"
+railway_environment_rename_mutation="mutation ProvisionEnvironmentRename(\$id: String!, \$input: EnvironmentRenameInput!) { environmentRename(id: \$id, input: \$input) }"
+railway_environment_create_mutation="mutation ProvisionEnvironmentCreate(\$input: EnvironmentCreateInput!) { environmentCreate(input: \$input) { id name } }"
 
 read_railway_projects() {
   local after_cursor=""
@@ -429,9 +429,10 @@ read_railway_projects() {
       --compact >"$page_file" \
       2>"$temporary_directory/railway-projects.err" ||
       fail "could not read Railway projects with the existing CLI session: $(cat "$temporary_directory/railway-projects.err")"
-    jq -e '.data.projects.edges | type == "array"' "$page_file" >/dev/null 2>&1 &&
-      jq -e '.data.projects.pageInfo.hasNextPage | type == "boolean"' "$page_file" >/dev/null 2>&1 ||
+    if ! jq -e '.data.projects.edges | type == "array"' "$page_file" >/dev/null 2>&1 ||
+      ! jq -e '.data.projects.pageInfo.hasNextPage | type == "boolean"' "$page_file" >/dev/null 2>&1; then
       fail "Railway returned an unreadable project list."
+    fi
     jq -s '.[0] + .[1].data.projects.edges' "$combined_file" "$page_file" >"$updated_file"
     mv "$updated_file" "$combined_file"
     if [[ "$(jq -r '.data.projects.pageInfo.hasNextPage' "$page_file")" != "true" ]]; then
