@@ -1,0 +1,20 @@
+name: Feature request
+description: Propose a problem or outcome for the project to consider.
+title: "[Feature]: "
+labels:
+  - needs-triage
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or opportunity
+      description: Describe who is affected and why the current behavior is insufficient.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe success without prescribing an implementation when possible.
+    validations:
+      required: true

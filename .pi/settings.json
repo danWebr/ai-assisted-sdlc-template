@@ -1,0 +1,4 @@
+{
+  "enableSkillCommands": true,
+  "packages": ["npm:pi-subagents@0.54.0", "npm:pi-web-access@0.24.1"]
+}

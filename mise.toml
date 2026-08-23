@@ -1,0 +1,24 @@
+[tasks.bootstrap]
+description = "Personalize a repository created from this template"
+run = "bash scripts/bootstrap.sh"
+
+[tasks."test:bootstrap"]
+description = "Exercise bootstrap behavior in disposable repositories"
+run = "bash tests/bootstrap-test.sh"
+
+[tasks.provision]
+description = "Review and apply the GitHub release train and optional Railway environments"
+run = "bash scripts/provision.sh"
+
+[tasks."test:provision"]
+description = "Exercise provisioning behavior with fake platform executables"
+run = "bash tests/provision-test.sh"
+
+[tasks.verify]
+description = "Run the stable, stack-independent project verification contract"
+run = [
+  "bash scripts/verify-repository.sh",
+  "bash scripts/verify-apps.sh",
+  "bash tests/bootstrap-test.sh",
+  "bash tests/provision-test.sh",
+]

@@ -1,0 +1,3 @@
+[tasks.bootstrap]
+description = "Personalize a repository created from this template"
+run = "bash scripts/bootstrap.sh"

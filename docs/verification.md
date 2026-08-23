@@ -1,0 +1,11 @@
+# Verification contract
+
+`mise run verify` is the stable, stack-independent root interface. GitHub exposes the single required check name `Verify`, so application stacks can change without rewriting branch rules.
+
+The root task checks repository invariants and then discovers direct children of `apps/` if that directory exists. Each deployable app owns its dependencies, configuration, tests, and a local `mise run verify` task. A project that uses another layout may replace `scripts/verify-apps.sh` while preserving the root task name and semantics.
+
+The empty scaffold passes without application code. Repository verification also rejects tracked paths covered by the canonical `.gitignore` policy, keeping local settings, generated output, Railway link context, and common secret-bearing files out of history. Bootstrap behavior is exercised only in disposable repositories created by its test harness; the tests never personalize their source checkout and reject symlink escapes from managed paths. Provisioning behavior is exercised through its public interactive task in a pseudo-terminal, with fake `gh` and `railway` executables as the external boundary. The harness covers cancellation before apply, workspace-scoped project selection, exact existing-project confirmation, refusal to query variable values, complete intended mutations, interrupted-run retry, existing-state convergence, overlapping-rule refusal, unexpected-topology refusal, non-interactive refusal, and read-back failure without touching live accounts. Adding an `apps/<name>/` directory opts that app into the local verification contract; a missing `apps/<name>/mise.toml` is therefore an error. The `apps/` layout remains a recommendation, not a requirement.
+
+`mise` is only the task interface. It does not install or pin Pi, GitHub CLI, Railway CLI, validators, or application toolchains. The GitHub workflow obtains repository validators in workflow-scoped actions, then calls the root task. Local provisioning and its behavior test require `jq`; the test also requires the platform-provided `script` pseudo-terminal command. Local contributors install required tools using their official installation guidance.
+
+GitHub Actions verifies repository and application contracts but never deploys. Deployment remains the provider's responsibility after required CI succeeds.

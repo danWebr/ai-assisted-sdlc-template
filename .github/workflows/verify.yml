@@ -1,0 +1,43 @@
+name: Verify
+
+on:
+  pull_request:
+  push:
+    branches:
+      - dev
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7.0.1
+
+      - name: Check workflow syntax
+        uses: raven-actions/actionlint@v2.2.0
+
+      - name: Check shell scripts
+        uses: ludeeus/action-shellcheck@2.0.0
+        with:
+          scandir: ./scripts
+
+      - name: Check Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v24.2.0
+        with:
+          globs: |
+            **/*.md
+            !.agents/skills/**
+            !.claude/skills/**
+
+      - name: Install mise task runner
+        uses: jdx/mise-action@v4.2.5
+        with:
+          install: false
+
+      - name: Run stable project contract
+        run: mise run verify
