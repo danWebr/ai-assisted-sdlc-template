@@ -2,27 +2,48 @@
 
 The lifecycle is human-led. Skills structure conversations and produce reviewable artifacts; they do not turn labels or issue state into automatic execution.
 
-## Golden path
+## Default path
 
-1. **Discover — `grill-with-docs`:** stress-test the idea while maintaining domain language and architectural decisions.
-2. **Specify — `to-spec`:** synthesize the agreed conversation into a specification labelled `ready-for-human`.
-3. **Ticket — `to-tickets`:** after human review, split the specification into dependency-aware, vertical implementation slices labelled `ready-for-agent`.
-4. **Map decisions when needed — `wayfinder`:** use only when a large effort still contains decision fog. It resolves decision tickets; it does not build the destination.
-5. **Implement — `implement`:** a human selects a ticket and explicitly invokes the skill. The workflow uses TDD at agreed seams where possible, checks the affected project, runs two-axis review, and commits.
-6. **Review — `code-review`:** review Standards and Spec separately so conformity cannot hide an incorrect implementation and correctness cannot hide a standards breach.
-7. **Handoff — `handoff`:** capture remaining context when another agent session must continue.
+Most work should use the shortest route that fits:
 
-`mise run bootstrap` performs one-time mechanical personalization only. It confirms the repository identity, records the display name and description in project-facing documentation, stores the non-secret repository identity and Railway intent in `.sdlc/project.conf`, and leaves an uncommitted diff for human review. It does not replace discovery; the first product-oriented command remains `grill-with-docs`. `setup-matt-pocock-skills` remains available for later tracker or domain-document reconfiguration, not initial product discovery.
+1. **Clarify only if needed — `grill-with-docs`:** use this when the problem, domain language, or acceptance criteria are still unclear.
+2. **Implement — `implement`:** for concrete work, invoke this directly. It uses TDD at agreed seams where practical, runs the affected verification, and performs the implementation checks before handing the change to review.
+3. **Review and ship:** open a pull request, then a human reviews and merges it. Use `code-review` separately when reviewing an existing branch or pull request, or when a change needs an explicit second pass.
 
-## Shorter routes
+Use `to-spec` and `to-tickets` only when work spans multiple sessions, contributors, or independently executable slices:
 
-- **Bug:** `diagnosing-bugs` → agree a regression seam → `tdd` or `implement` → `code-review`.
-- **Prototype:** `prototype` → record what was learned → discard or ticket production work separately.
-- **Research:** `research` → commit a primary-source Markdown finding → resume the decision it informs.
-- **Incoming requests:** `triage` → clarify or verify → prepare an agent-ready brief; triage never triggers implementation.
-- **Architecture:** `codebase-design` for interface vocabulary; `improve-codebase-architecture` to find and discuss deepening opportunities.
-- **Already concrete work:** invoke `tdd` directly after agreeing the public seam.
-- **Unsure which path fits:** invoke `ask-matt`.
+```text
+grill-with-docs → to-spec → human review → to-tickets → implement
+```
+
+`wayfinder` is an optional planning route for genuinely large efforts with unresolved decisions. It feeds back into `to-spec`; it is not a required stage for ordinary features.
+
+## User-facing workflow entry points
+
+Most users only need these entry points:
+
+| Situation | Start with | What it provides |
+| --- | --- | --- |
+| Concrete feature or change | `implement` | TDD, verification, and implementation handoff |
+| Unclear idea or requirements | `grill-with-docs` | A sharper problem, domain language, and decisions |
+| Large multi-session effort | `to-spec` | A human-reviewable specification |
+| Approved specification | `to-tickets` | Dependency-aware implementation slices |
+| Incoming issue or request | `triage` | Clarification, verification, and an agent-ready brief |
+| Difficult bug | `diagnosing-bugs` | A tight reproduction loop and regression seam |
+
+The following skills support those routes rather than adding mandatory lifecycle stages:
+
+- `tdd` and `code-review` support implementation and review.
+- `domain-modeling` keeps terminology and durable decisions coherent.
+- `research` and `prototype` answer questions that cannot be settled from conversation alone.
+- `handoff` carries context between sessions.
+- `codebase-design` and `improve-codebase-architecture` support architecture work.
+- `resolving-merge-conflicts` handles an exceptional repository state.
+- `ask-matt` routes an unfamiliar situation to the smallest suitable entry point.
+
+## Repository setup
+
+`mise run bootstrap` performs one-time mechanical personalization only. It confirms the repository identity, records the display name and description in project-facing documentation, stores the non-secret repository identity and Railway intent in `.sdlc/project.conf`, and leaves an uncommitted diff for human review. It does not replace product discovery. `setup-matt-pocock-skills` remains available for later tracker or domain-document reconfiguration, not initial product discovery.
 
 ## Human checkpoints
 

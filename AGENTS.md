@@ -21,7 +21,7 @@ No application layout is mandatory. When the project has multiple independently 
 
 ## Lifecycle
 
-Use `grill-with-docs` for product discovery, `to-spec` for a human-reviewable specification, `to-tickets` for implementation slices, optional `wayfinder` for unresolved decision fog, explicit `implement` for approved work, `code-review` for the Standards and Spec axes, and `handoff` when another session must continue the work. See `docs/lifecycle.md` for shorter routes.
+Use the smallest route that fits: invoke `implement` directly for concrete work; use `grill-with-docs` first when requirements or domain language are unclear; and use `to-spec` followed by `to-tickets` only for work spanning multiple sessions or contributors. `wayfinder` is optional for large efforts with unresolved decisions. `code-review`, `handoff`, research, prototypes, and architecture skills support these routes but are not mandatory lifecycle stages. See `docs/lifecycle.md` for the entry points.
 
 Use test-driven development at agreed public seams. Prefer behavior tests over implementation-coupled tests. During implementation, run focused tests and typechecking regularly, then the full affected verification suite once at the end.
 
