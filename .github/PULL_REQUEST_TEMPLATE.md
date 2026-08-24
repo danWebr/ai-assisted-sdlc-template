@@ -10,7 +10,7 @@ Closes #
 
 ## Verification
 
-<!-- Include `mise run verify` and any focused evidence. -->
+<!-- Include `mise run verify`, `git diff --check <base>...HEAD`, and any focused evidence. -->
 
 ## Operational impact
 

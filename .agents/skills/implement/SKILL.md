@@ -4,20 +4,12 @@ description: "Implement a piece of work based on a spec or set of tickets."
 disable-model-invocation: true
 ---
 
-Implement the work described by the user in the spec or tickets.
-
-Use tdd where possible, at pre-agreed seams.
-
-Run typechecking regularly, single test files regularly, and the full test suite once at the end.
-
-Once done, use code-review to review the work.
-
 Unless the user explicitly requests a different approach, use the default delivery workflow:
 
-1. Prepare ordinary ticket work on a focused branch from the latest `dev`. Fetch `origin/dev` and verify that it resolves. If the working tree is not clean, stop and report the blocking files before changing branches. Create and switch to `feat/<ticket>-<short-description>` from the fetched `origin/dev`; if that branch already exists, stop and report it. When starting on `dev`, fast-forward it to the fetched `origin/dev` before creating the feature branch. Never implement or commit directly on the starting branch, `dev`, or `main` in this default workflow.
-2. Run `mise run verify`, commit the reviewed implementation with a Conventional Commit, and push the feature branch to `origin` with upstream tracking.
-3. Open a pull request from the feature branch to `dev`, using the repository's ordinary pull-request template and including the ticket, summary, verification evidence, operational impact, and agent assistance.
-4. Wait for the pull request's required CI checks to finish. If a check fails, inspect the failure, make the smallest fix, rerun the affected checks and `mise run verify`, commit and push the fix, and wait again.
-5. Finish by reporting the pull-request URL and whether all required checks passed. Never merge the pull request.
+1. Choose the delivery branch before editing. When invoked on `dev` for ordinary ticket work, fetch `origin dev` and verify that `origin/dev` resolves; if it does not, stop and report the missing branch. If the working tree is not clean, stop and report the blocking files before changing branches. Fast-forward local `dev` to `origin/dev` with `git merge --ff-only`, then create and switch to a focused branch from `origin/dev`. Use a prefix matching the change type, such as `feat/`, `fix/`, `docs/`, or `chore/`; include `<ticket>-` when a ticket exists, otherwise use `<short-description>`. If the target branch already exists, stop and report it. On an existing non-protected topic branch, stay on that branch and do not silently create a second branch. On `main` or another protected branch, stop unless the user explicitly requests a compatible hotfix or other repository-approved workflow. Never commit or push directly to `dev` or `main`.
+2. Implement the work described by the user in the spec or tickets. Use tdd where possible, at pre-agreed seams. Run typechecking and focused tests regularly. Once implementation is ready, use `code-review` against the delivery base (`origin/dev` for the default route, or the explicitly approved base). Address actionable findings before treating the implementation as reviewed.
+3. Run `mise run verify` and `git diff HEAD --check` before staging. Stage the reviewed implementation, run `git diff --cached --check`, then commit it with a Conventional Commit. Push the feature branch to `origin` with upstream tracking.
+4. Open a pull request from the feature branch to `dev`, using `.github/PULL_REQUEST_TEMPLATE.md` and including the ticket when one exists, summary, verification evidence, operational impact, and agent assistance.
+5. Wait for every required pull-request check to complete. For a code or test failure, inspect the failure, make the smallest fix, rerun the affected checks, `mise run verify`, and `git diff HEAD --check`, then stage, commit, push, and wait again. If the failure is infrastructure, permissions, cancellation, or still present after one repair, stop and report it for human intervention. Finish only when every required check has passed; never merge the pull request.
 
-If the user explicitly specifies another base branch, branch strategy, commit-only handoff, pull-request target, or review/CI approach, follow that instruction instead of this default workflow.
+If the user explicitly specifies another base branch, branch strategy, commit-only handoff, pull-request target, or review/CI approach, follow it only when it remains compatible with `AGENTS.md`, protected-branch rules, `mise run verify`/`Verify`, and human review and merge requirements. If it conflicts with those invariants, stop and report the conflict.
