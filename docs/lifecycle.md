@@ -7,8 +7,8 @@ The lifecycle is human-led. Skills structure conversations and produce reviewabl
 Most work should use the shortest route that fits:
 
 1. **Clarify only if needed — `grill-with-docs`:** use this when the problem, domain language, or acceptance criteria are still unclear.
-2. **Implement — `implement`:** for concrete work, invoke this directly. It uses TDD at agreed seams where practical, runs the affected verification, and performs the implementation checks before handing the change to review.
-3. **Review and ship:** open a pull request, then a human reviews and merges it. Use `code-review` separately when reviewing an existing branch or pull request, or when a change needs an explicit second pass.
+2. **Implement — `implement`:** for concrete work, invoke this directly. By default it starts ordinary ticket work from the latest `dev` on a focused feature branch, uses TDD at agreed seams where practical, runs `mise run verify`, commits, pushes, opens a pull request targeting `dev`, and waits for required CI. It fixes failing checks before handoff unless the user explicitly requests another approach.
+3. **Review and ship:** a human reviews and merges the pull request. Use `code-review` separately when reviewing an existing branch or pull request, or when a change needs an explicit second pass.
 
 Use `to-spec` and `to-tickets` only when work spans multiple sessions, contributors, or independently executable slices:
 

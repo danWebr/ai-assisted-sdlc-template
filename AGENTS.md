@@ -29,6 +29,8 @@ Use test-driven development at agreed public seams. Prefer behavior tests over i
 
 GitHub Issues is the supported tracker. Follow `docs/agents/issue-tracker.md` and the canonical labels in `docs/agents/triage-labels.md`; do not guess tracker operations or label meanings.
 
+Unless the user explicitly requests a different approach, ordinary ticket implementation invoked on `dev` starts from the latest `dev` on a focused feature branch, commits there, pushes the branch, opens a pull request targeting `dev`, waits for required CI, and fixes failing checks before handoff. Agents never merge the pull request.
+
 Feature work targets `dev` and is squash-merged by a human. Production promotion uses a reviewed `dev` to `main` pull request and a merge commit. A hotfix targets `main`, is squash-merged after review, and is then synchronized back into `dev`. Use the production-promotion pull-request template explicitly because GitHub does not select it from the base branch automatically.
 
 Direct pushes, force pushes, deletion, and bypass are prohibited on `dev` and `main`. Both require pull requests and the stable `Verify` check.
