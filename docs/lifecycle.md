@@ -24,7 +24,7 @@ Most users only need these entry points:
 
 | Situation | Start with | What it provides |
 | --- | --- | --- |
-| Concrete feature or change | `implement` | TDD, verification, and implementation handoff |
+| Concrete feature or change | `implement` | TDD, reviewed verification, and pull-request handoff |
 | Unclear idea or requirements | `grill-with-docs` | A sharper problem, domain language, and decisions |
 | Large multi-session effort | `to-spec` | A human-reviewable specification |
 | Approved specification | `to-tickets` | Dependency-aware implementation slices |
