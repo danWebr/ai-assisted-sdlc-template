@@ -10,7 +10,7 @@ Specifications use `ready-for-human`; they are not implementation-ready. Tracer-
 
 ## Pull requests
 
-Ordinary changes target `dev` and use the default pull-request template. Unless the user explicitly requests a different approach, `implement` starts from the latest `dev` on a focused feature branch, commits and pushes it, opens the pull request, waits for required CI, and fixes failing checks before handoff. The description records the issue, summary, verification evidence, operational impact, and agent assistance. A human reviews and squash-merges each feature branch so the resulting `dev` commit follows Conventional Commits.
+Ordinary changes target `dev` and use the default pull-request template. The default delivery sequence for `implement` is defined in [the implement skill](../.agents/skills/implement/SKILL.md). The description records the issue, summary, verification evidence, operational impact, and agent assistance. A human reviews and squash-merges each feature branch so the resulting `dev` commit follows Conventional Commits.
 
 Production promotion is a reviewed pull request from `dev` to `main` and uses `.github/PULL_REQUEST_TEMPLATE/production-promotion.md`. GitHub does not automatically choose a template based on the base branch, so the author must explicitly select the production-promotion template, for example with the `template=production-promotion.md` query parameter when opening the pull request. A human uses a merge commit to preserve the release boundary.
 
