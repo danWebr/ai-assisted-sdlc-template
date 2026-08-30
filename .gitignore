@@ -1,8 +1,38 @@
+# Environment files and credentials
 .env
 .env.*
 !.env.example
+.envrc
+.npmrc
+.netrc
+credentials.json
+*credentials*.json
+*secret*.json
+*service-account*.json
 *.pem
 *.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Local state, databases, logs, and caches
+.terraform/
+*.tfstate
+*.tfstate.*
+*.sqlite
+*.sqlite3
+*.db
+*.log
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.angular/
+.next/
+.turbo/
+
+# Local tooling and generated output
 .mise.local.toml
 .railway/
 .claude/settings.local.json
