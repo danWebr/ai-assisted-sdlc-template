@@ -7,8 +7,8 @@ The lifecycle is human-led. Skills structure conversations and produce reviewabl
 Most work should use the shortest route that fits:
 
 1. **Clarify only if needed — `grill-with-docs`:** use this when the problem, domain language, or acceptance criteria are still unclear.
-2. **Implement — `implement`:** for concrete work, invoke this directly. It uses TDD at agreed seams where practical, runs the affected verification, and performs the implementation checks before handing the change to review.
-3. **Review and ship:** open a pull request, then a human reviews and merges it. Use `code-review` separately when reviewing an existing branch or pull request, or when a change needs an explicit second pass.
+2. **Implement — `implement`:** for concrete work, invoke this directly. Its default delivery workflow is defined in [the implement skill](../.agents/skills/implement/SKILL.md); a human reviews and merges the resulting pull request.
+3. **Review and ship:** a human reviews and merges the pull request. Use `code-review` separately when reviewing an existing branch or pull request, or when a change needs an explicit second pass.
 
 Use `to-spec` and `to-tickets` only when work spans multiple sessions, contributors, or independently executable slices:
 
@@ -24,7 +24,7 @@ Most users only need these entry points:
 
 | Situation | Start with | What it provides |
 | --- | --- | --- |
-| Concrete feature or change | `implement` | TDD, verification, and implementation handoff |
+| Concrete feature or change | `implement` | TDD, reviewed verification, and pull-request handoff |
 | Unclear idea or requirements | `grill-with-docs` | A sharper problem, domain language, and decisions |
 | Large multi-session effort | `to-spec` | A human-reviewable specification |
 | Approved specification | `to-tickets` | Dependency-aware implementation slices |
